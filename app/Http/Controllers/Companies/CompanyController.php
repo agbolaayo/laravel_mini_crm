@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Companies;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -37,6 +38,7 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+		$logo = '';
         $request->validate([
             'name' => 'required|min:2|max:191',
             'email' => 'nullable|email|min:5|max:191',
@@ -45,11 +47,16 @@ class CompanyController extends Controller
         ]);
 
         if(isset($request->logo)){
-            $logo = Storage::put('public', $data['logo']);
-            $request->logo = basename($logo);
+            $storage =  Storage::put('public', $request->logo);
+			$logo = basename($storage);
         }
 
-        Company::create($request->all());
+        Company::create([
+			'name' => $request->name,
+            'email' => $request->email,
+            'website' => $request->website,
+            'logo' => $logo,
+		]);
 
         return redirect()->route('companies.index')->with('success', 'Company is added successfully');
     }
