@@ -32,5 +32,5 @@ The project is Mini CRM built with Laravel 9
 ## Login
 
 You can login with:
-- Email: `admin@admin.com` or with Username `admin`.
+- Email: `admin@admin.com`
 - Password : `password`.
